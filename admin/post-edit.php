@@ -105,7 +105,7 @@ if (isset($_POST['_IS_POST_BACK_'])) {
   $post_tags    = $data['tags'];
   $post_date    = $data['date'];
   $post_time    = $data['time'];
-  $post_format  = $data['format'];
+  $post_format  = isset($data['format']) ? $data['format'] : '1';
   $post_can_comment = isset($data['can_comment']) ? $data['can_comment'] : '1';
 }
 ?>
@@ -133,8 +133,8 @@ if (isset($_POST['_IS_POST_BACK_'])) {
     ?>"/>
     内容格式：
     <select name="format" class="use_md" style="margin-right:16px;">
-      <option value="0" <?php if ($post_format == '0') echo 'selected="selected";'; ?>>普通Html</option>
-      <option value="1" <?php if ($post_format == '1') echo 'selected="selected";'; ?>>Markdown</option>
+      <option value="2" <?php if ($post_format == '2') echo 'selected="selected";'; ?>>Markdown</option>
+      <option value="1" <?php if ($post_format == '1') echo 'selected="selected";'; ?>>普通Html</option>
     </select>
   </div>
   <div style="margin-bottom:20px;" id="editor_container">

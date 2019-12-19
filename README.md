@@ -1,7 +1,13 @@
 # tinyblog
 
-Myself blog based BlogMi, a tiny php blog, which is rather not need DataBase, than based files.
+Myself blog based BlogMi, a tiny php blog, which is rather not need DataBase, than based files. [MiniCMS](https://github.com/bg5sbk/MiniCMS)
 
+Main Link Category
+- ?post/${id}
+- ?archive/
+- ?${page_path}/  page
+- ?date/2019-12/
+- ?tag/${tag}/
 
 # Deploy
 

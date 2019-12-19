@@ -6,8 +6,8 @@
 <meta name="description" content="<?php mc_the_title();?>" />
 <title><?php if (mc_is_post() || mc_is_page()) { mc_the_title(); ?> | <?php mc_site_name(); } else { mc_site_name(); ?> | <?php mc_site_desc(); }?></title>
 <meta name="keywords" content="<?php mc_the_onlytags(); ?>"/>
-<link href="<?php mc_theme_url('style.css'); ?>" type="text/css" rel="stylesheet"/>
 <link rel="stylesheet" type="text/css" href="http://localhost/github/editor-md/css/editormd.css">
+<link href="<?php mc_theme_url('style.css'); ?>" type="text/css" rel="stylesheet"/>
 
 </head>
 <body class="">
@@ -30,6 +30,7 @@
       <a href="#" title="" class="skin6" onclick="switcherSkin(this)"></a>
       <a href="#" title="" class="skin7" onclick="switcherSkin(this)"></a>
       <a href="#" title="" class="skin8" onclick="switcherSkin(this)"></a>
+      <a href="#" title="" class="skin9" onclick="switcherSkin(this)"></a>
     </div>
   </div>
   <div class="clear"></div>
@@ -39,15 +40,17 @@
       <div class="post">
         <h1 class="title"><?php mc_the_link(); ?></h1>
         <div class="content" style="min-height:300px;" id="post_content">
-          <textarea id="md_content" style="display:none;">
+          <?php if (mc_is_md()) { ?>
+            <textarea id="md_content" style="display:none;"><?php mc_the_content(); ?></textarea>
+          <?php } else { ?>
             <?php mc_the_content(); ?>
-          </textarea>
+          <?php }?>
         </div>
-            <div class="post_meta">
-              <div class="post_date"><?php mc_the_date(); ?></div>
-              <div class="post_tag"><?php mc_the_tags('','',''); ?></div>
-              <div class="post_comm"><a href="<?php mc_post_link(); ?>#comm">评论</a></div>
-            </div>
+        <div class="post_meta">
+          <div class="post_date"><?php mc_the_date(); ?></div>
+          <div class="post_tag"><?php mc_the_tags('','',''); ?></div>
+          <div class="post_comm"><a href="<?php mc_post_link(); ?>#comm">评论</a></div>
+        </div>
       </div>
         <?php if (mc_can_comment()) { ?>
         <div id="comm">
@@ -126,8 +129,9 @@
       document.querySelectorAll('body')[0].className = s;
       document.querySelectorAll('#skinbar a.' + s)[0].className += ' cur';
     }
+    <?php if (mc_is_md()) { ?>
     testEditormdView = editormd.markdownToHTML("post_content", {
-        markdown        :  "\r\n" + $("#md_content").text(),
+        markdown        :  $("#md_content").text(), // "\r\n" +
         //htmlDecode      : true,       // 开启 HTML 标签解析，为了安全性，默认不开启
         htmlDecode      : "style,script,iframe",  // you can filter tags decode
         //toc             : false,
@@ -142,6 +146,8 @@
         flowChart       : true,  // 默认不解析
         sequenceDiagram : true,  // 默认不解析
     });
+    <?php } ?>
+
   }
   function switcherSkin (ele) {
     // console.log(ele);

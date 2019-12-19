@@ -114,7 +114,7 @@ function mc_goto_old($text) {
     echo '" class="nextpage">';
     echo $text;
     echo '</a>';
-  } 
+  }
   elseif ($mc_get_type == 'date') {
     echo '<a href="';
     echo $mc_config['site_link'];
@@ -291,8 +291,8 @@ function mc_the_content($print = true) {
   global $mc_data;
   if (!isset($mc_data)) {
     global $mc_post_id;
-    $data = unserialize(file_get_contents('files/posts/data/'.$mc_post_id.'.dat')); 
-    $html = $data['content']; 
+    $data = unserialize(file_get_contents('files/posts/data/'.$mc_post_id.'.dat'));
+    $html = $data['content'];
   }
   else {
     $html = $mc_data['content'];
@@ -304,7 +304,7 @@ function mc_the_content($print = true) {
   return $html;
 }
 
-function textLimit($str_cut,$length = 30){ 
+function textLimit($str_cut,$length = 30){
   if (strlen($str_cut) > $length){
     for($i=0; $i < $length; $i++) {
       if (ord($str_cut[$i]) > 128) $i = $i + 2;
@@ -320,8 +320,8 @@ function mc_the_short_content($print = true) {
   global $mc_data;
   if (!isset($mc_data)) {
     global $mc_post_id;
-    $data = unserialize(file_get_contents('files/posts/data/'.$mc_post_id.'.dat')); 
-    $html = $data['content']; 
+    $data = unserialize(file_get_contents('files/posts/data/'.$mc_post_id.'.dat'));
+    $html = $data['content'];
   }
   else {
     $html = $mc_data['content'];
@@ -336,8 +336,8 @@ function mc_the_md() {
   global $mc_data;
   if (!isset($mc_data)) {
     global $mc_post_id;
-    $data = unserialize(file_get_contents('files/posts/data/'.$mc_post_id.'.dat')); 
-    $html = isset($data['md']); 
+    $data = unserialize(file_get_contents('files/posts/data/'.$mc_post_id.'.dat'));
+    $html = isset($data['md']);
   }
   else {
     $html = isset($mc_data['md']);
@@ -376,6 +376,10 @@ function mc_page_title() {
 function mc_can_comment() {
   global $mc_post_id, $mc_post;
   return isset($mc_post['can_comment']) ? $mc_post['can_comment'] == '1' : true;
+}
+function mc_is_md() {
+  global $mc_post_id, $mc_post;
+  return isset($mc_post['format']) ? $mc_post['format'] == '2' : false;
 }
 
 function mc_comment_code() {
