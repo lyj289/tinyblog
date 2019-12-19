@@ -226,56 +226,56 @@ if (isset($_POST['_IS_POST_BACK_'])) {
       target.value = target.temp_value;
     }
   }
+  function initxheditor() {
+    $('#elm1').xheditor({
+        urlType:'rel',
+        internalScript:true,
+        inlineScript:true,
+        emotPath:'xheditor/xheditor_emot/',
+        upImgUrl:"upload.php",
+        upImgExt:"jpg,jpeg,gif,png",
+        onUpload: insertUpload,
+        remoteImgSaveUrl: 'saveremoteimg.php'
+    });
+  }
   $(pageInit);
   function pageInit(){
+    let mdEditor = editormd("editor_container", {
+        width   : "90%",
+        height  : 640,
+        syncScrolling : "single",
+        path : '/github/editor-md/lib/',
+    });
+    document.getElementById('editor_container').onpaste = function(e){
+      if ( e.clipboardData.items ) {
+        ele = e.clipboardData.items
+        for (var i = 0; i < ele.length; ++i) {
+            if ( ele[i].kind == 'file' && ele[i].type.indexOf('image/') !== -1 ) {
+                var blob = ele[i].getAsFile();
+                if ( !window.FormData ) {
+                    alert('not support window.FormData may not upload file');
+                } else {
+                    var formData = new FormData();
+                    formData.append('editormd-image-file', blob);
 
-    // $('#elm1').xheditor({
-    //     urlType:'rel',
-    //     internalScript:true,
-    //     inlineScript:true,
-    //     emotPath:'xheditor/xheditor_emot/',
-    //     upImgUrl:"upload.php",
-    //     upImgExt:"jpg,jpeg,gif,png",
-    //     onUpload: insertUpload,
-    //     remoteImgSaveUrl: 'saveremoteimg.php'
-    //   });
-      let mdEditor = editormd("editor_container", {
-          width   : "90%",
-          height  : 640,
-          syncScrolling : "single",
-          path : '/github/editor-md/lib/',
-      });
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', './img-upload.php', true);
 
-      document.getElementById('editor_container').onpaste = function(e){
-          if ( e.clipboardData.items ) {
-              ele = e.clipboardData.items
-              for (var i = 0; i < ele.length; ++i) {
-                  if ( ele[i].kind == 'file' && ele[i].type.indexOf('image/') !== -1 ) {
-                      var blob = ele[i].getAsFile();
-                      if ( !window.FormData ) {
-                          alert('not support window.FormData may not upload file');
-                      } else {
-                          var formData = new FormData();
-                          formData.append('editormd-image-file', blob);
-
-                          var xhr = new XMLHttpRequest();
-                          xhr.open('POST', './img-upload.php', true);
-
-                          xhr.onload = function() {
-                              if (xhr.status === 200) {
-                                  let res = JSON.parse(this.responseText);
-                                  mdEditor.insertValue(`![](${res.url})`);
-                              } else {
-                                  console.log('upload failed');
-                              }
-                          }
-                          xhr.send(formData);
-                      }
-                  }
-              }
-          }
-          return false;
-      };
-    }
+                    xhr.onload = function() {
+                        if (xhr.status === 200) {
+                            let res = JSON.parse(this.responseText);
+                            mdEditor.insertValue(`![](${res.url})`);
+                        } else {
+                            console.log('upload failed');
+                        }
+                    }
+                    xhr.send(formData);
+                }
+            }
+        }
+      }
+      return false;
+    };
+  }
 
 </script>

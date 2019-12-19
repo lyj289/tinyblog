@@ -30,7 +30,6 @@
 
     $name = 'editormd-image-file';
 
-    // var_dump($_FILES);
     if (isset($_FILES[$name]))
     {
         $imageUploader = new EditorMdUploader($savePath, $saveURL, $formats['image'], 1, 'YmdHis');  // Ymdhis表示按日期生成文件名，利用date()函数
