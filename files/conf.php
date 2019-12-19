@@ -1,6 +1,6 @@
 <?php
 $mc_config = array (
-  'site_link' => '/blog',
+  'site_link' => '.',
   'site_name' => '宋朝的鱼',
   'site_desc' => '记录一些自己平时的东西',
   'user_name' => 'admin',
