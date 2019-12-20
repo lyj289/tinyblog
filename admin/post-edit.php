@@ -110,6 +110,7 @@ if (isset($_POST['_IS_POST_BACK_'])) {
 }
 ?>
 <link rel="stylesheet" type="text/css" href="http://localhost/github/editor-md/css/editormd.css">
+<link style="text/css" rel="stylesheet" href="../files/theme/v/markdown.css" />
 <form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
   <input type="hidden" name="_IS_POST_BACK_" value=""/>
   <?php if ($succeed) { ?>
@@ -274,7 +275,7 @@ if (isset($_POST['_IS_POST_BACK_'])) {
             }
         }
       }
-      return false;
+      // return false;
     };
   }
 

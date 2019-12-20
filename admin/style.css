@@ -1,6 +1,6 @@
 * { font-family:"Microsoft YaHei","ËÎÌו",Arial; }
 html, body { padding:0; margin:0; }
-body { font-size:14px; background:#f9f9f9; }
+body { font-size:14px; background:#f9f9f5; }
 a { text-decoration:none; color:#426DC9; outline:none; blr:expression(this.onFocus=this.blur()); }
 a:hover { color:#C00; text-decoration:none; }
 form { padding:0; margin:0; }
@@ -22,7 +22,7 @@ select { border:solid 1px #e0e0e0; padding:2px; border-radius:3px 3px 3px 3px; b
 #submenu li { float:left; }
 #submenu li a { display:block; padding:6px 18px; background:#f0f0f0; border:solid 1px #e0e0e0; margin:6px 0 6px 6px; text-decoration:none; color:#426DC9; }
 
-#content { width:900px; margin:20px auto; background:#fff; border:solid 1px #e0e0e0; border-radius:3px 3px 3px 3px; }
+#content { width:900px; margin:20px auto; border:solid 1px #e0e0e0; border-radius:3px 3px 3px 3px; }
 #content_box { padding:20px; }
 
 #footer { color:#888; margin-top:20px; padding:12px 0; width:900px; margin:0 auto; font-size:12px; }
