@@ -1,10 +1,11 @@
-* { font-family:"Microsoft YaHei","ËÎÌו",Arial; }
+* { font-family:"Microsoft YaHei",Arial; }
 html, body { padding:0; margin:0; }
-body { font-size:14px; background:#f9f9f5; }
+body { font-size:16px; background:#f9f9f5; }
 a { text-decoration:none; color:#426DC9; outline:none; blr:expression(this.onFocus=this.blur()); }
 a:hover { color:#C00; text-decoration:none; }
 form { padding:0; margin:0; }
 
+input, select{font-size: 14px;}
 select { border:solid 1px #e0e0e0; padding:2px; border-radius:3px 3px 3px 3px; background:#fff; }
 
 .clear { clear:both; height:0; padding:0; margin:0; font-size:0; border:none; }
@@ -30,26 +31,26 @@ select { border:solid 1px #e0e0e0; padding:2px; border-radius:3px 3px 3px 3px; b
 #footer a { color:#666; }
 #footer a:hover { color:#333; }
 
-.link_button { background:#efefef; padding:2px 4px; font-size:12px; margin-right:4px; border-radius:3px 3px 3px 3px; }
+.link_button { background:#efefef; padding:2px 4px; margin-right:4px; border-radius:3px 3px 3px 3px; }
 .link_button:hover, .link_button.current { background:#bc0000; color:#fff; }
 
-.table_list table { border:0; width:100%; border:solid 1px #e0e0e0; border-top:0; color:#333; border-radius:3px 3px 3px 3px; font-size:12px; }
+.table_list table { border:0; width:100%; border:solid 1px #e0e0e0; border-top:0; color:#333; border-radius:3px 3px 3px 3px;}
 .table_list td { padding:8px; border-top:solid 1px #e0e0e0; vertical-align:top; }
 .table_list thead td, .table_list tfoot td { background:#f0f0f0; }
 .table_list tbody tr div { visibility:hidden; border:none; padding:0; margin:0; }
 .table_list tbody tr:hover div { visibility:visible; }
 .table_list .alt { background:#EBEBEB; }
-.table_list .row_name { font-size:14px; }
+/*.table_list .row_name { font-size:14px; }*/
 .table_list .row_tool { margin-top:8px; }
 
 .table_list_tool span { margin-right:20px; }
 .table_list_tool { color:#333; }
 .table_list { padding:6px 0; }
 
-.post_mode_link { padding-bottom:10px; font-size:12px; }
+.post_mode_link { padding-bottom:10px;}
 .post_mode_link span { color:#666; }
 
-.table_list_tool .pager { float:right; margin-right:0; padding-top:4px; color:#666; font-size:12px; }
+.table_list_tool .pager { float:right; margin-right:0; padding-top:4px; color:#666;}
 .table_list_tool .pager .link_button { padding:4px 8px; }
 .table_list_tool .pager input { width:26px;font-size:12px;text-align:center; }
 

@@ -112,8 +112,8 @@ if (isset($_GET['date']))
 else
   $filter_date = '';
 $mc_posts2 = array();
-for ($i = 0; $i < $post_count; $i ++) { 
-  $post_id = $post_ids[$i]; 
+for ($i = 0; $i < $post_count; $i ++) {
+  $post_id = $post_ids[$i];
   $post = $mc_posts[$post_id];
   if ($filter_tag != '' && !in_array($filter_tag, $post['tags']))
     continue;
@@ -270,14 +270,14 @@ function goto_page(e)
           <a class="link_button" href="../?post/<?php echo $post_id; ?>" target="_blank">查看</a>
         </div>
       </td>
-      <td><?php 
-  $tags = $post['tags']; 
-  $tag_count = count($tags); 
-  for ($j = 0; $j < $tag_count; $j ++) { 
-    $tag = $tags[$j]; 
-?><a href="?state=<?php echo $state; ?>&date=<?php echo $filter_date; ?>&tag=<?php echo htmlspecialchars($tag); ?>"><?php echo htmlspecialchars($tag); ?></a><?php 
+      <td><?php
+  $tags = $post['tags'];
+  $tag_count = count($tags);
+  for ($j = 0; $j < $tag_count; $j ++) {
+    $tag = $tags[$j];
+?><a href="?state=<?php echo $state; ?>&date=<?php echo $filter_date; ?>&tag=<?php echo htmlspecialchars($tag); ?>"><?php echo htmlspecialchars($tag); ?></a><?php
     if ($j < $tag_count - 1)
-      echo ',&nbsp;'; 
+      echo ',&nbsp;';
   }
    ?></td>
       <td><?php echo htmlspecialchars($post['date']);?></td>
