@@ -54,11 +54,13 @@ select { border:solid 1px #e0e0e0; padding:2px; border-radius:3px 3px 3px 3px; b
 .table_list_tool .pager .link_button { padding:4px 8px; }
 .table_list_tool .pager input { width:26px;font-size:12px;text-align:center; }
 
-div.updated, .message { background-color: #FFFFE0; border-color: #E6DB55; padding:8px; margin-bottom:20px; }
-div.updated, div.error { border-radius:3px; border-style:solid; border-width:1px; }
-
-.admin_page_name { font-size:24px; padding-bottom:16px; color:#333; }
-.admin_page_name a { margin-left:10px; }
+div.updated{ border-radius:3px; border-style:solid; border-width:1px;}
+div.updated, div.updated.message { background-color: #FFFFE0; border-color: #E6DB55; padding:8px; margin-bottom:20px; }
+div.updated.error { background-color: #eca391; border-color: #bf6346; padding:8px; margin-bottom:20px; }
+#post-edit .updated{
+  position: absolute; left: 45%;
+}
+.admin_page_name { font-size:24px; color:#333; }
 
 .small_form .name { font-size:16px; font-weight:bold; color:#333; }
 .small_form .label { color:#333; padding-bottom:4px; }
@@ -76,3 +78,27 @@ div.updated, div.error { border-radius:3px; border-style:solid; border-width:1px
 .edit_textarea { height:400px;width:99%;font-size:13px;border:solid 1px #ccc;padding:3px 4px; border-radius:3px; resize:vertical; }
 .small.edit_textbox {width: 69%;}
 .use_md{margin-right: 16px; padding: 3px 4px; font-size: 20px;}
+.btn {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+.btn-default {
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+}

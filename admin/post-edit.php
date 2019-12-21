@@ -1,6 +1,54 @@
-
 <?php
-require 'head.php';
+date_default_timezone_set('Asia/Shanghai');
+ini_set("display_errors", "On"); error_reporting(E_ALL);
+require_once '../files/conf.php';
+if (isset($_COOKIE['mc_token'])) {
+  $token = $_COOKIE['mc_token'];
+  if ($token != md5($mc_config['user_name'].'_'.$mc_config['user_pass'])) {
+    Header("Location:index.php");
+  }
+} else {
+  Header("Location:index.php");
+}
+$page_file = basename($_SERVER['PHP_SELF']);
+function shorturl($input) {
+  $base32 = array (
+    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
+    'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
+    'q', 'r', 's', 't', 'u', 'v', 'w', 'x',
+    'y', 'z', '0', '1', '2', '3', '4', '5'
+  );
+  $hex = md5('prefix'.$input.'surfix'.time());
+  $hexLen = strlen($hex);
+
+  $subHexLen = $hexLen / 8;
+  $output = array();
+
+  for ($i = 0; $i < $subHexLen; $i++) {
+    $subHex = substr ($hex, $i * 8, 8);
+    // PHP7开始，含十六进制字符串不再被认为是数字
+    // 如果非要检测字符串是否含十六进制数字，官方建议的代码是
+    // http://www.bjphper.com/?post/12bip0
+    // $int = 0x3FFFFFFF & (1 * ('0x'.$subHex));
+    $int = 0x3FFFFFFF & (1 * (filter_var("0x" . $subHex, FILTER_VALIDATE_INT, FILTER_FLAG_ALLOW_HEX)));
+    $out = '';
+    for ($j = 0; $j < 6; $j++) {
+      $val = 0x0000001F & $int;
+      $out .= $base32[$val];
+      $int = $int >> 5;
+    }
+    $output[] = $out;
+  }
+  return $output;
+}
+function post_sort($a, $b) {
+  $a_date = $a['date'];
+  $b_date = $b['date'];
+  if ($a_date != $b_date)
+    return $a_date > $b_date ? -1 : 1;
+  return $a['time'] > $b['time'] ? -1 : 1;
+}
+
 $post_id          = '';
 $post_state       = '';
 $post_title       = '';
@@ -18,25 +66,17 @@ if (isset($_POST['_IS_POST_BACK_'])) {
   $post_state       = $_POST['state'];
   $post_title       = trim($_POST['title']);
   $post_content     = get_magic_quotes_gpc() ? stripslashes(trim($_POST['content'])) : trim($_POST['content']);
-  $tmp_tags = $_POST['tags'] ?$_POST['tags']: "未分类";
+  $tmp_tags = $_POST['tags'] ?$_POST['tags']: "default";
   $post_tags        = explode(',', trim($tmp_tags));
   $post_date        = date("Y-m-d");
   $post_time        = date("H:i:s");
   $post_can_comment  = $_POST['can_comment'];
   $post_format  = $_POST['format'];
-  if ($_POST['year'] != '')
-    $post_date = substr_replace($post_date, $_POST['year'], 0, 4);
-  if ($_POST['month'] != '')
-    $post_date = substr_replace($post_date, $_POST['month'], 5, 2);
-  if ($_POST['day'] != '')
-    $post_date = substr_replace($post_date, $_POST['day'], 8, 2);
-  if ($_POST['hourse'] != '')
-    $post_time = substr_replace($post_time, $_POST['hourse'], 0, 2);
-  if ($_POST['minute'] != '')
-    $post_time = substr_replace($post_time, $_POST['minute'], 3, 2);
-  if ($_POST['second'] != '')
-    $post_time = substr_replace($post_time, $_POST['second'], 6, 2);
-    $post_tags_count = count($post_tags);
+  if ($_POST['date'] != '')
+    $post_date = $_POST['date'];
+  if ($_POST['time'] != '')
+    $post_time = $_POST['time'];
+  $post_tags_count = count($post_tags);
   for ($i = 0; $i < $post_tags_count; $i ++) {
     $trim = trim($post_tags[$i]);
     if ($trim == '') {
@@ -109,143 +149,98 @@ if (isset($_POST['_IS_POST_BACK_'])) {
   $post_can_comment = isset($data['can_comment']) ? $data['can_comment'] : '1';
 }
 ?>
-<link rel="stylesheet" type="text/css" href="http://localhost/github/editor-md/css/editormd.css">
-<link style="text/css" rel="stylesheet" href="../files/theme/v/markdown.css" />
-<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>后台管理</title>
+  <link style="text/css" rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" type="text/css" href="/github/editor-md/css/editormd.css">
+  <link style="text/css" rel="stylesheet" href="../files/theme/v/markdown.css" />
+  <style type="text/css">
+    html, body{
+      height: 100%;
+    }
+  </style>
+</head>
+<body id="post-edit">
+
+<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post" style="height: 100%">
   <input type="hidden" name="_IS_POST_BACK_" value=""/>
+  <input type="hidden" name="format" value="2"/>
+  <input type="hidden" name="date" value="<?php echo $post_date; ?>"/>
+  <input type="hidden" name="time" value="<?php echo $post_time; ?>"/>
+  <input type="hidden" name="can_comment" value="1"/>
+  <input type="hidden" name="state" value="publish"/>
+  <input type="hidden" name="id" value="<?php echo $post_id; ?>"/>
+
   <?php if ($succeed) { ?>
   <?php if ($post_state == 'publish') { ?>
-  <div class="updated">文章已发布。 <a href="../?post/<?php echo $post_id; ?>" target="_blank">查看文章</a></div>
+  <div class="updated message">文章已发布。 <a href="../?post/<?php echo $post_id; ?>" target="_blank">查看文章</a></div>
   <?php } else { ?>
-  <div class="updated">文章已保存到“草稿箱”。 <a href="post.php?state=draft">打开草稿箱</a></div>
+  <div class="updated message">文章已保存到“草稿箱”。 <a href="post.php?state=draft">打开草稿箱</a></div>
   <?php } ?>
+  <?php } ?>
+  <?php if ($error_msg) {?>
+    <div class="updated error"><?php echo $error_msg; ?></div>
   <?php } ?>
   <div class="admin_page_name">
-  <?php if ($post_id == '') echo "撰写文章"; else echo "编辑文章"; ?>
-  </div>
-  <div style="margin-bottom:20px;">
-    <input name="title" type="text" class="edit_textbox small" value="<?php
-    if ($post_title == "") {
-      echo '在此输入标题" " style="color:#888;" onfocus="empty_textbox_focus(this)" onblur="empty_textbox_blur(this)';
-    }
-    else {
+    <input name="title" type="text" placeholder="输入标题" class="edit_textbox mock_input title" value="<?php
+    if ($post_title !== "") {
       echo htmlspecialchars($post_title);
     }
     ?>"/>
-    内容格式：
-    <select name="format" class="use_md" style="margin-right:16px;">
-      <option value="2" <?php if ($post_format == '2') echo 'selected="selected";'; ?>>Markdown</option>
-      <option value="1" <?php if ($post_format == '1') echo 'selected="selected";'; ?>>普通Html</option>
-    </select>
+    <div style="position: absolute; right:10px;top:10px;">
+      <input name="tags" type="text" style="display: inline-block;" class="mock_input" placeholder="输入标签" value="<?php
+      if (count($post_tags)) {
+        echo htmlspecialchars(implode(',', $post_tags));
+      }
+      ?>"/>
+      <input type="button" name="save" value="草稿" class="btn btn-default" onclick="save_draft()" />
+      <input type="submit" name="save" value="保存" class="btn btn-default" />
+      <a href="post.php" class="btn btn-default">返回</a>
+      <a href="../?archive/" target="_blank" class="btn btn-default">档案</a>
+    </div>
   </div>
-  <div style="margin-bottom:20px;" id="editor_container">
+
+  <div style="margin-bottom:0;" id="editor_container">
     <textarea id="elm1" name="content" style="width: 860px; height: 450px; display: none; "><?php echo htmlspecialchars($post_content); ?></textarea>
   </div>
-  <div style="margin-bottom:20px;">
-    <input name="tags" type="text" class="edit_textbox" placeholder="<?php
-    if (count($post_tags) == 0) {
-      echo '在此输入标签，多个标签用英语逗号(,)分隔" " style="color:#888;" onfocus="empty_textbox_focus(this)" onblur="empty_textbox_blur(this)';
-    }
-    ?>" value="<?php
-    if (count($post_tags)) {
-      echo htmlspecialchars(implode(',', $post_tags));
-    }
-    ?>"/>
-  </div>
-  <div style="margin-bottom:20px;text-align:right">
-    <div style="float:left">
-    时间：
-    <select name="year">
-      <option value=""></option>
-<?php $year = substr($post_date, 0, 4); for ($i = 1990; $i <= 2030; $i ++) { ?>
-      <option value="<?php echo $i; ?>" <?php if ($year == $i) echo 'selected="selected";' ?>><?php echo $i; ?></option>
-<?php } ?>
-    </select> -
-    <select name="month">
-      <option value=""></option>
-<?php $month = substr($post_date, 5, 2); for ($i = 1; $i <= 12; $i ++) { $m = sprintf("%02d", $i); ?>
-      <option value="<?php echo $m; ?>" <?php if ($month == $m) echo 'selected="selected";' ?>><?php echo $m; ?></option>
-<?php } ?>
-    </select> -
-    <select name="day">
-      <option value=""></option>
-<?php $day = substr($post_date, 8, 2); for ($i = 1; $i <= 31; $i ++) { $m = sprintf("%02d", $i); ?>
-      <option value="<?php echo $m; ?>" <?php if ($day == $m) echo 'selected="selected";' ?>><?php echo $m; ?></option>
-<?php } ?>
-    </select>&nbsp;
-    <select name="hourse">
-      <option value=""></option>
-<?php $hourse = substr($post_time, 0, 2); for ($i = 0; $i <= 23; $i ++) { $m = sprintf("%02d", $i); ?>
-      <option value="<?php echo $m; ?>" <?php if ($hourse == $m) echo 'selected="selected";' ?>><?php echo $m; ?></option>
-<?php } ?>
-    </select> :
-    <select name="minute">
-      <option value=""></option>
-<?php $minute = substr($post_time, 3, 2); for ($i = 0; $i <= 59; $i ++) { $m = sprintf("%02d", $i); ?>
-      <option value="<?php echo $m; ?>" <?php if ($minute == $m) echo 'selected="selected";' ?>><?php echo $m; ?></option>
-<?php } ?>
-    </select> :
-    <select name="second">
-      <option value=""></option>
-<?php $second = substr($post_time, 6, 2); for ($i = 0; $i <= 59; $i ++) { $m = sprintf("%02d", $i); ?>
-      <option value="<?php echo $m; ?>" <?php if ($second == $m) echo 'selected="selected";' ?>><?php echo $m; ?></option>
-<?php } ?>
-    </select> (留空为当前时间)
-    </div>
-    评论：
-    <select name="can_comment" style="margin-right:16px;">
-      <option value="1" <?php if ($post_can_comment == '1') echo 'selected="selected";'; ?>>允许</option>
-      <option value="0" <?php if ($post_can_comment == '0') echo 'selected="selected";'; ?>>禁用</option>
-    </select>
-    状态：
-    <select name="state" style="width:100px;">
-      <option value="publish" <?php if ($post_state == 'publish') echo 'selected="selected"'; ?>>发布</option>
-      <option value="draft" <?php if ($post_state == 'draft') echo 'selected="selected"'; ?>>草稿</option>
-    </select>
-    <div style="clear:both;"></div>
-  </div>
-  <div style="text-align:right">
-    <input type="hidden" name="id" value="<?php echo $post_id; ?>"/>
-    <input type="submit" name="save" value="保存" style="padding:6px 20px;"/>
-  </div>
+
 </form>
-<?php require 'foot.php' ?>
-<script type="text/javascript" src="xheditor/jquery.js"></script>
-<script type="text/javascript" src="http://localhost/github/editor-md/editormd.min.js"></script>
-<!-- <script type="text/javascript" src="xheditor/xheditor.js"></script> -->
+<script type="text/javascript" src="/github/editor-md/examples/js/jquery.min.js"></script>
+<script type="text/javascript" src="/github/editor-md/editormd.min.js"></script>
 <script type="text/javascript">
-  function empty_textbox_focus(target){
-    if (target.temp_value != undefined && target.value != target.temp_value)
-      return;
-    target.temp_value = target.value;
-    target.value='';
-    target.style.color='#000';
+
+  function save_draft() {
+    $('input[name=state]').val('draft');
+    $('form').submit();
   }
-  function empty_textbox_blur(target) {
-    if (target.value == '') {
-      target.style.color='#888';
-      target.value = target.temp_value;
-    }
-  }
-  function initxheditor() {
-    $('#elm1').xheditor({
-        urlType:'rel',
-        internalScript:true,
-        inlineScript:true,
-        emotPath:'xheditor/xheditor_emot/',
-        upImgUrl:"upload.php",
-        upImgExt:"jpg,jpeg,gif,png",
-        onUpload: insertUpload,
-        remoteImgSaveUrl: 'saveremoteimg.php'
-    });
-  }
+
   $(pageInit);
+  let mdEditor;
   function pageInit(){
-    let mdEditor = editormd("editor_container", {
-        width   : "90%",
-        height  : 640,
+    mdEditor = editormd("editor_container", {
+        height  : 'calc(100% - 50px',
+        emoji : false,
+        fontSize: '16px',
+        lineNumbers: false,
+        toolbarIcons : function() {
+            return [
+              "bold", "del", "italic", "quote", "ucwords", "uppercase", "lowercase", "|",
+              "h1", "h2", "h3", "h4", "h5", "h6", "|",
+              "list-ul", "list-ol", "hr", "|",
+              "link", "reference-link", "image", "code", "preformatted-text", "code-block", "table", "datetime", "pagebreak", "|",
+              "watch", "preview", "clear", "|",
+              "help"
+          ]
+        },
         syncScrolling : "single",
         path : '/github/editor-md/lib/',
+        imageUpload    : true,
+        imageFormats   : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+        imageUploadURL : "./img-upload.php",
+        onload : function() {}
     });
     document.getElementById('editor_container').onpaste = function(e){
       if ( e.clipboardData.items ) {
@@ -275,8 +270,8 @@ if (isset($_POST['_IS_POST_BACK_'])) {
             }
         }
       }
-      // return false;
     };
   }
-
 </script>
+</body>
+</html>

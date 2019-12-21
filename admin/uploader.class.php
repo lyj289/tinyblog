@@ -59,7 +59,7 @@
             {
                 @mkdir($this->savePath, 0777);
             }
-            $this->saveURL        = $saveURL . '/' . $subDir;
+            $this->saveURL        = $saveURL . $subDir;
             $this->formats        = $formats;
             $this->maxSize        = $maxSize;
             $this->cover          = $cover;
