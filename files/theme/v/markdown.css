@@ -19,6 +19,28 @@
     color: inherit;
     text-decoration: none;
 }
+#editor_container.editormd-fullscreen{
+  top: 60px;
+}
+.admin_page_name{
+  height: 50px;
+}
+input.title{
+  font-size: 2rem;
+  font-weight: 700;
+  width: 600px;
+}
+.mock_input {
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+    color: #000;
+    border: none;
+    outline: none;
+    height: 100%;
+    padding: 0 1.4rem;
+
+}
 /*admin editor end*/
 
 .markdown-body{
