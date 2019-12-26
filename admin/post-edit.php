@@ -221,6 +221,7 @@ if (isset($_POST['_IS_POST_BACK_'])) {
   let mdEditor;
   function pageInit(){
     mdEditor = editormd("editor_container", {
+        width: '99%',
         height  : 'calc(100% - 50px',
         emoji : false,
         fontSize: '16px',
@@ -228,7 +229,6 @@ if (isset($_POST['_IS_POST_BACK_'])) {
         toolbarIcons : function() {
             return [
               "bold", "del", "italic", "quote", "ucwords", "uppercase", "lowercase", "|",
-              "h1", "h2", "h3", "h4", "h5", "h6", "|",
               "list-ul", "list-ol", "hr", "|",
               "link", "reference-link", "image", "code", "preformatted-text", "code-block", "table", "datetime", "pagebreak", "|",
               "watch", "preview", "clear", "|",
