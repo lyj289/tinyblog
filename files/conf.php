@@ -2,7 +2,7 @@
 $mc_config = array (
   'site_link' => '.',
   'site_name' => '宋朝的鱼',
-  'site_desc' => '记录一些自己平时的东西',
+  'site_desc' => '记录一些自己平时的想法',
   'user_name' => 'admin',
   'user_pass' => 'lyj289',
   'user_nick' => '唐朝司徒',
