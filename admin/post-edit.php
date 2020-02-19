@@ -271,6 +271,12 @@ if (isset($_POST['_IS_POST_BACK_'])) {
         }
       }
     };
+
+    document.addEventListener('keyup', e => {
+      if (e.ctrlKey && e.keyCode == 83) {
+        document.forms[0].submit();
+      }
+    })
   }
 </script>
 </body>
