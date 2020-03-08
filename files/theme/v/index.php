@@ -28,7 +28,7 @@
     <div id="content_box">
       <?php if (mc_is_post()) { ?>
       <div class="post">
-        <h1 class="title"><?php mc_the_link(); ?></h1>
+        <h1 class="title"><?php mc_edit_link(); ?></h1>
         <div class="post_meta">
           <div class="post_date"><?php mc_the_date(); ?></div>
           <div class="post_tag"><?php mc_the_tags('','',''); ?></div>
@@ -164,15 +164,15 @@
     return document.querySelector(e);
   }
   document.onkeydown = function(event){
-      var href = '';
-      if (event.keyCode == 39) {
-        href = q('.nextpage').href;
-        window.location.href = href;
-      }
-      if (event.keyCode == 37) {
-        href = q('.prevpage').href;
-        window.location.href = href;
-      }
+    var href = '';
+    if (event.keyCode == 39) {
+      href = q('.nextpage').href;
+      window.location.href = href;
+    }
+    if (event.keyCode == 37) {
+      href = q('.prevpage').href;
+      window.location.href = href;
+    }
   }
 </script>
 </body>

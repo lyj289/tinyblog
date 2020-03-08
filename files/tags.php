@@ -344,6 +344,17 @@ function mc_the_link() {
   echo '</a>';
 }
 
+function mc_edit_link() {
+  global $mc_post_id, $mc_post, $mc_config;
+  echo '<a href="';
+  echo $mc_config['site_link'];
+  echo '/admin/post-edit.php?id=';
+  echo $mc_post_id;
+  echo '">';
+  echo htmlspecialchars($mc_post['title']);
+  echo '</a>';
+}
+
 function mc_post_link() {
   global $mc_post_id, $mc_post, $mc_config;
   echo $mc_config['site_link'];
