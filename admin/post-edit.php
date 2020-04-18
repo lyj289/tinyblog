@@ -226,6 +226,7 @@ if (isset($_POST['_IS_POST_BACK_'])) {
         emoji : false,
         fontSize: '16px',
         lineNumbers: false,
+        htmlDecode : true,
         toolbarIcons : function() {
             return [
               "bold", "del", "italic", "quote", "ucwords", "uppercase", "lowercase", "|",
