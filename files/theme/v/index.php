@@ -95,7 +95,7 @@
         </strong>
 
         [ <?php mc_the_date(); ?> ]
-        [ <?php mc_the_tags('','',''); ?> ]
+        [ <?php mc_the_tags(); ?> ]
       </p>
 
       <?php } ?>
