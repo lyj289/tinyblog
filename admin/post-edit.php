@@ -224,6 +224,8 @@ if (isset($_POST['_IS_POST_BACK_'])) {
         width: '99%',
         height  : 'calc(100% - 50px',
         emoji : false,
+        atLink    : false,
+        emailLink : false,
         fontSize: '16px',
         lineNumbers: false,
         htmlDecode : true,
