@@ -167,7 +167,8 @@ img {
   line-height: 25px;
 }
 .markdown-body code{
-	background-color: #D6DBDF;
+	/*background-color: #D6DBDF;*/
+	background-color: #b3e2c1;
 }
 .editormd-preview-container pre,
 .editormd-preview-container code,
