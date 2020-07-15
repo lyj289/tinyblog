@@ -220,6 +220,66 @@ if (isset($_POST['_IS_POST_BACK_'])) {
   $(pageInit);
   let mdEditor;
   function pageInit(){
+    editormd.keyMaps = {
+        "Ctrl-1"       : "h1",
+        "Ctrl-2"       : "h2",
+        "Ctrl-3"       : "h3",
+        "Ctrl-4"       : "h4",
+        "Ctrl-5"       : "h5",
+        "Ctrl-6"       : "h6",
+        "Ctrl-B"       : "bold",  // if this is string ==  editormd.toolbarHandlers.xxxx
+        "Ctrl-D"       : "datetime",
+
+        "Ctrl-H"       : "hr",
+
+        "Ctrl-L"        : function() {
+            var cm        = this.cm;
+            var cursor    = cm.getCursor();
+            var selection = cm.getSelection();
+
+            var title = (selection === "") ? "" : " \""+selection+"\"";
+
+            cm.replaceSelection("[" + selection + "]("+title+")");
+
+            if (selection === "") {
+                cm.setCursor(cursor.line, cursor.ch + 1);
+            }
+        },
+
+        "Ctrl-Q"     : "quote",
+        "Ctrl-C"     : "code",
+
+        "Shift-C"      : function() {
+            var cm        = this.cm;
+            var cursor    = cm.getCursor();
+            var selection = cm.getSelection();
+
+            cm.replaceSelection(["```", selection, "```"].join("\n"));
+
+            if (selection === "") {
+                cm.setCursor(cursor.line, cursor.ch + 3);
+            }
+        },
+
+
+        "Ctrl-I"     : function() {
+            var cm        = this.cm;
+            var cursor    = cm.getCursor();
+            var selection = cm.getSelection();
+
+            var title = (selection === "") ? "" : " \""+selection+"\"";
+
+            cm.replaceSelection("![" + selection + "]("+title+")");
+
+            if (selection === "") {
+                cm.setCursor(cursor.line, cursor.ch + 4);
+            }
+        },
+
+        "F9"               : "watch",
+        "F10"              : "preview",
+        "F11"              : "fullscreen",
+    };
     mdEditor = editormd("editor_container", {
         width: '99%',
         height  : 'calc(100% - 50px',
