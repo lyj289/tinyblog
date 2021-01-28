@@ -305,32 +305,66 @@ if (isset($_POST['_IS_POST_BACK_'])) {
         imageUploadURL : "./img-upload.php",
         onload : function() {}
     });
+
     document.getElementById('editor_container').onpaste = function(e){
       if ( e.clipboardData.items ) {
         ele = e.clipboardData.items
         for (var i = 0; i < ele.length; ++i) {
-            if ( ele[i].kind == 'file' && ele[i].type.indexOf('image/') !== -1 ) {
-                var blob = ele[i].getAsFile();
-                if ( !window.FormData ) {
-                    alert('not support window.FormData may not upload file');
-                } else {
-                    var formData = new FormData();
-                    formData.append('editormd-image-file', blob);
-
-                    var xhr = new XMLHttpRequest();
-                    xhr.open('POST', './img-upload.php', true);
-
-                    xhr.onload = function() {
-                        if (xhr.status === 200) {
-                            let res = JSON.parse(this.responseText);
-                            mdEditor.insertValue(`![](${res.url})`);
-                        } else {
-                            console.log('upload failed');
-                        }
-                    }
-                    xhr.send(formData);
-                }
+          if ( ele[i].kind == 'file' && ele[i].type.indexOf('image/') !== -1 ) {
+            var blob = ele[i].getAsFile();
+            if ( !window.FormData ) {
+              alert('not support window.FormData may not upload file');
+            } else {
+              changeBlobImageQuality(blob, function(newBlob) {
+                var file = new File([newBlob], "image.jpg", {lastModified: new Date()});
+                ajaxUpload(file);
+                console.log(blob, file);
+              }, 'image/jpeg' , 0.5)
             }
+          }
+        }
+      }
+    };
+
+    function ajaxUpload(blob) {
+      var formData = new FormData();
+      formData.append('editormd-image-file', blob);
+
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', './img-upload.php', true);
+
+      xhr.onload = function() {
+        if (xhr.status === 200 && this.responseText) {
+          let res = JSON.parse(this.responseText);
+          if (res.success) {
+            mdEditor.insertValue(`![](${res.url})`);
+          } else {
+            console.log(res);
+          }
+        } else {
+            console.log('upload failed');
+        }
+      }
+      xhr.send(formData);
+    }
+
+    document.body.ondragenter = function(ev){
+      ev.dataTransfer.dropEffect = 'copy';
+    };
+
+    document.body.ondragover = function(ev){
+      ev.preventDefault(); //防止默认事件拖入图片 放开的时候打开图片了
+      ev.dataTransfer.dropEffect = 'copy';
+    };
+
+    document.body.ondrop = function(ev){
+      ev.preventDefault();
+      var files = ev.dataTransfer.files;
+      for(var i=0; i<files.length; i++)
+      {
+        if(files[i].type.indexOf('image') >= 0)
+        {
+          ajaxUpload(files[i]);
         }
       }
     };
@@ -340,6 +374,41 @@ if (isset($_POST['_IS_POST_BACK_'])) {
         document.forms[0].submit();
       }
     })
+
+    function changeBlobImageQuality(blob, callback, format, quality){
+      format = format || 'image/jpeg';
+      quality = quality || 0.9; // 经测试0.9最合适
+      var fr = new FileReader();
+      fr.onload = function(e)
+      {
+        var dataURL = e.target.result;
+        var img = new Image();
+        img.onload = function()
+        {
+          var canvas = document.createElement('canvas');
+          var ctx = canvas.getContext('2d');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0);
+
+          var newDataURL = canvas.toDataURL(format, quality);
+          if(callback) callback(dataURLtoBlob(newDataURL));
+          canvas = null;
+        };
+        img.src = dataURL;
+      };
+      fr.readAsDataURL(blob);
+    }
+
+    function dataURLtoBlob(dataurl){
+      var arr = dataurl.split(','),
+        mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]),
+        len = bstr.length,
+        u8arr = new Uint8Array(len);
+      while (len--) u8arr[len] = bstr.charCodeAt(len);
+      return new Blob([u8arr], {type: mime});
+    }
   }
 </script>
 </body>
