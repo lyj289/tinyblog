@@ -247,9 +247,9 @@ if (isset($_POST['_IS_POST_BACK_'])) {
         },
 
         "Ctrl-Q"     : "quote",
-        "Ctrl-C"     : "code",
+        // "Ctrl-C"     : "code",
 
-        "Shift-C"      : function() {
+        "Ctrl-C"      : function() {
             var cm        = this.cm;
             var cursor    = cm.getCursor();
             var selection = cm.getSelection();
@@ -258,6 +258,30 @@ if (isset($_POST['_IS_POST_BACK_'])) {
 
             if (selection === "") {
                 cm.setCursor(cursor.line, cursor.ch + 3);
+            }
+        },
+
+        "Ctrl-,"      : function() {
+            var cm        = this.cm;
+            var cursor    = cm.getCursor();
+            var selection = cm.getSelection();
+
+            cm.replaceSelection(["<sub>", selection, "</sub>"].join(""));
+
+            if (selection === "") {
+                cm.setCursor(cursor.line, cursor.ch + 5);
+            }
+        },
+
+        "Ctrl-."      : function() {
+            var cm        = this.cm;
+            var cursor    = cm.getCursor();
+            var selection = cm.getSelection();
+
+            cm.replaceSelection(["<sup>", selection, "</sup>"].join(""));
+
+            if (selection === "") {
+                cm.setCursor(cursor.line, cursor.ch + 5);
             }
         },
 
