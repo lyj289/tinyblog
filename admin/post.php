@@ -103,6 +103,10 @@ for ($i = 0; $i < $post_count; $i ++) {
 }
 $date_array = array_unique($date_array);
 $tags_array = array_unique($tags_array);
+
+// sort the tags
+sort($tags_array);
+
 if (isset($_GET['tag']))
   $filter_tag = $_GET['tag'];
 else
