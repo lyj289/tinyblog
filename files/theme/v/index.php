@@ -125,8 +125,8 @@
     <?php if (mc_is_md()) { ?>
     testEditormdView = editormd.markdownToHTML("post_content", {
         markdown        :  $("#md_content").text(), // "\r\n" +
-        //htmlDecode      : true,       // 开启 HTML 标签解析，为了安全性，默认不开启
-        htmlDecode      : "style,script,iframe",  // you can filter tags decode
+        htmlDecode      : true,       // 开启 HTML 标签解析，为了安全性，默认不开启
+        // htmlDecode      : "style,script,iframe",  // you can filter tags decode
         //toc             : false,
         tocm            : true,    // Using [TOCM]
         //tocContainer    : "#custom-toc-container", // 自定义 ToC 容器层

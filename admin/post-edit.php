@@ -66,7 +66,7 @@ if (isset($_POST['_IS_POST_BACK_'])) {
   $post_state       = $_POST['state'];
   $post_title       = trim($_POST['title']);
   $post_content     = get_magic_quotes_gpc() ? stripslashes(trim($_POST['content'])) : trim($_POST['content']);
-  $tmp_tags = $_POST['tags'] ?$_POST['tags']: "default";
+  $tmp_tags = $_POST['tags'] ?$_POST['tags']: "daily";
   $post_tags        = explode(',', trim($tmp_tags));
   $post_date        = date("Y-m-d");
   $post_time        = date("H:i:s");
@@ -153,13 +153,16 @@ if (isset($_POST['_IS_POST_BACK_'])) {
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <title>后台管理</title>
+  <title><?php echo $post_title; ?> - 后台管理</title>
   <link style="text/css" rel="stylesheet" href="style.css" />
   <link rel="stylesheet" type="text/css" href="/github/editor-md/css/editormd.css">
   <link style="text/css" rel="stylesheet" href="../files/theme/v/markdown.css" />
   <style type="text/css">
     html, body{
       height: 100%;
+    }
+    .markdown-body img {
+        max-width: 50%;
     }
   </style>
 </head>
@@ -208,6 +211,7 @@ if (isset($_POST['_IS_POST_BACK_'])) {
   </div>
 
 </form>
+
 <script type="text/javascript" src="/github/editor-md/examples/js/jquery.min.js"></script>
 <script type="text/javascript" src="/github/editor-md/editormd.min.js"></script>
 <script type="text/javascript">
@@ -307,6 +311,7 @@ if (isset($_POST['_IS_POST_BACK_'])) {
     mdEditor = editormd("editor_container", {
         width: '99%',
         height  : 'calc(100% - 50px',
+        tex: true,
         emoji : false,
         atLink    : false,
         emailLink : false,
@@ -336,14 +341,15 @@ if (isset($_POST['_IS_POST_BACK_'])) {
         for (var i = 0; i < ele.length; ++i) {
           if ( ele[i].kind == 'file' && ele[i].type.indexOf('image/') !== -1 ) {
             var blob = ele[i].getAsFile();
+            var imgType = ele[i].type;
+            var imgExt = imgType.split('/')[1];
             if ( !window.FormData ) {
               alert('not support window.FormData may not upload file');
             } else {
               changeBlobImageQuality(blob, function(newBlob) {
-                var file = new File([newBlob], "image.jpg", {lastModified: new Date()});
+                var file = new File([newBlob], "image."+imgExt, {lastModified: new Date()});
                 ajaxUpload(file);
-                console.log(blob, file);
-              }, 'image/jpeg' , 0.5)
+              }, imgType , 0.5)
             }
           }
         }
