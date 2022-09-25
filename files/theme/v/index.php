@@ -7,7 +7,7 @@
 <meta name="description" content="<?php mc_the_title();?>" />
 <title><?php if (mc_is_post() || mc_is_page()) { mc_the_title(); ?> | <?php mc_site_name(); } else { mc_site_name(); ?> | <?php mc_site_desc(); }?></title>
 <meta name="keywords" content="<?php mc_the_onlytags(); ?>"/>
-<link rel="stylesheet" type="text/css" href="/github/editor-md/css/editormd.css">
+<link rel="stylesheet" type="text/css" href="third-party/editor-md/css/editormd.css">
 <link href="<?php mc_theme_url('style.css'); ?>" type="text/css" rel="stylesheet"/>
 
 </head>
@@ -111,15 +111,15 @@
   </div>
 
 <div class="footer">李玉俭----2012-11-02修改 <?php mc_site_desc();?></div>
-<script type="text/javascript" src="/blog/admin/xheditor/jquery.js"></script>
-<script type="text/javascript" src="/github/editor-md/lib/marked.min.js"></script>
-<script type="text/javascript" src="/github/editor-md/lib/prettify.min.js"></script>
-<script type="text/javascript" src="/github/editor-md/lib/underscore.min.js"></script>
-<script type="text/javascript" src="/github/editor-md/lib/flowchart.min.js"></script>
-<script type="text/javascript" src="/github/editor-md/lib/jquery.flowchart.min.js"></script>
-<script type="text/javascript" src="/github/editor-md/lib/raphael.min.js"></script>
-<script type="text/javascript" src="/github/editor-md/lib/sequence-diagram.min.js"></script>
-<script type="text/javascript" src="/github/editor-md/editormd.min.js"></script>
+<script type="text/javascript" src="admin/xheditor/jquery.js"></script>
+<script type="text/javascript" src="third-party/editor-md/lib/marked.min.js"></script>
+<script type="text/javascript" src="third-party/editor-md/lib/prettify.min.js"></script>
+<script type="text/javascript" src="third-party/editor-md/lib/underscore.min.js"></script>
+<script type="text/javascript" src="third-party/editor-md/lib/flowchart.min.js"></script>
+<script type="text/javascript" src="third-party/editor-md/lib/jquery.flowchart.min.js"></script>
+<script type="text/javascript" src="third-party/editor-md/lib/raphael.min.js"></script>
+<script type="text/javascript" src="third-party/editor-md/lib/sequence-diagram.min.js"></script>
+<script type="text/javascript" src="third-party/editor-md/editormd.min.js"></script>
 <script>
   window.onload = function(){
     <?php if (mc_is_md()) { ?>

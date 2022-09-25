@@ -155,7 +155,7 @@ if (isset($_POST['_IS_POST_BACK_'])) {
   <meta charset="UTF-8" />
   <title><?php echo $post_title; ?> - 后台管理</title>
   <link style="text/css" rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" type="text/css" href="/github/editor-md/css/editormd.css">
+  <link rel="stylesheet" type="text/css" href="../third-party/editor-md/css/editormd.css">
   <link style="text/css" rel="stylesheet" href="../files/theme/v/markdown.css" />
   <style type="text/css">
     html, body{
@@ -212,8 +212,8 @@ if (isset($_POST['_IS_POST_BACK_'])) {
 
 </form>
 
-<script type="text/javascript" src="/github/editor-md/examples/js/jquery.min.js"></script>
-<script type="text/javascript" src="/github/editor-md/editormd.min.js"></script>
+<script type="text/javascript" src="../third-party/editor-md/examples/js/jquery.min.js"></script>
+<script type="text/javascript" src="../third-party/editor-md/editormd.min.js"></script>
 <script type="text/javascript">
 
   function save_draft() {
@@ -328,7 +328,7 @@ if (isset($_POST['_IS_POST_BACK_'])) {
           ]
         },
         syncScrolling : "single",
-        path : '/github/editor-md/lib/',
+        path : '../third-party/editor-md/lib/',
         imageUpload    : true,
         imageFormats   : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
         imageUploadURL : "./img-upload.php",

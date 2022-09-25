@@ -1,7 +1,12 @@
 <?php
 require_once dirname(__FILE__).'/files/core.php';
 $mc_post_per_page = 60;
-$qs = $_SERVER['QUERY_STRING'];
+
+$qs = '';
+if(isset($_SERVER['QUERY_STRING'])){
+  $qs = $_SERVER['QUERY_STRING'];
+}
+
 if (preg_match('|^post/([a-z0-5]{6})$|', $qs, $matches)) {
   $mc_get_type = 'post';
   $mc_get_name = $matches[1];
